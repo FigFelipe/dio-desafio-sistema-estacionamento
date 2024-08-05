@@ -14,6 +14,7 @@ Desenvolver um sistema básico de gerenciamento para um estacionamento, utilizan
 
 Onde:
 
+* O estacionamento deve conter uma 'Vaga' e um 'Veículo' estacionado
 * O usuario informa um veículo, escolhendo a vaga desejada
 * Consiga consultar os veículos estacionados
 * Definir os preços, e calcular o custo de um veículo estacionado
