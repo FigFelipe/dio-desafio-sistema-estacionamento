@@ -41,6 +41,12 @@ namespace SistemaEstacionamento.Models
         {
             this.nome = nome;
         }
+
+        // Metodos
+        public Vaga isVagaOcupada(Vaga vaga)
+        {
+            return vaga;
+        }
         
         public override string ToString()
         {

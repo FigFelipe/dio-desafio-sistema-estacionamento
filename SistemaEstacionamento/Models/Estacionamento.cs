@@ -16,8 +16,8 @@ namespace SistemaEstacionamento.Models
 
         public void CadastrarVeiculo()
         {
+            string placaVeiculo = null;
             bool isPlacaValida = false;
-            string placaVeiculo = null; // Armazena a 'placa do veículo'
 
             do
             {
@@ -25,26 +25,35 @@ namespace SistemaEstacionamento.Models
                 Console.WriteLine("    Menu > [Cadastro de Veículos]");
                 Console.WriteLine("  ----------------------------------\n");
 
+                Console.WriteLine("   Exemplo(s) de entrada(s) de placa(s):");
+
+                Console.WriteLine("\n   Com uso do hífen (-):");
+                Console.WriteLine("     --> ABC-1234");
+                Console.WriteLine("     --> ABC-1C34 (padrão mercosul)");
+
+                Console.WriteLine("\n   Sem o uso do hífen (-):");
+                Console.WriteLine("     --> ABC1234");
+                Console.WriteLine("     --> ABC1C34 (padrão mercosul)\n");
+
+
+
+
                 // Recebe do usuário a 'placa do veículo'
-                Console.Write(" 1) Informe a placa do veículo (XXX-1234): ");
+                Console.Write(" 1) Informe a placa do veículo (padrão comum, ou mercosul): ");
                 placaVeiculo = Console.ReadLine();
 
-                // Validação básica da placa informada
-                // 1. Deve conter, ao menos, um caracter '-' (traço)
-                // 2. Deve conter 8 (oito) caracteres de tamanho
-                if (placaVeiculo.Contains("-") && placaVeiculo.Length.Equals(8))
-                {
-                    isPlacaValida = true;
+                // Validação da placa informada
+                isPlacaValida = veiculo.ValidarPlaca(placaVeiculo);
 
+                // Se a placa informada for válida
+                if (isPlacaValida)
+                {
+                    
                 }
                 else
                 {
-                    
-                    isPlacaValida = false;
-
                     Console.Clear();
                     Console.WriteLine($"\n  --> [Erro] A placa '{placaVeiculo}' é inválida. Tente novamente.");
-                    
                 }
 
 

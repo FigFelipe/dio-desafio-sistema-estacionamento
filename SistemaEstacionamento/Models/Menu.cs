@@ -21,7 +21,7 @@ namespace SistemaEstacionamento.Models
                 // Menu do sistema de estacionamento
                 Console.WriteLine("  =====================================");
                 Console.WriteLine("     SISTEMA DE ESTACIONAMENTO");
-                Console.WriteLine("  =====================================\n\n");
+                Console.WriteLine("  =====================================\n");
 
                 
                 Console.WriteLine("     [1] - Cadastrar Veículo...");
