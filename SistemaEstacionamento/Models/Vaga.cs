@@ -11,6 +11,7 @@ namespace SistemaEstacionamento.Models
         // Atributos
         private string nome { get; set; }
         private Veiculo veiculo { get; set; }
+        public DateTime momento { get; set; }
 
         // Construtores
         public Vaga()
@@ -30,6 +31,11 @@ namespace SistemaEstacionamento.Models
             this.veiculo = veiculo;
         }
 
+        public Vaga(string nome, Veiculo veiculo, DateTime momento) : this(nome, veiculo)
+        {
+            this.momento = momento;
+        }
+
 
         // Getters e Setters
         public string GetNome()
@@ -42,6 +48,16 @@ namespace SistemaEstacionamento.Models
             this.nome = nome;
         }
 
+        public DateTime GetMomento()
+        {
+            return momento;
+        }
+
+        public void SetMomento()
+        {
+            this.momento = DateTime.Now;
+        }
+
         // Metodos
         public Vaga isVagaOcupada(Vaga vaga)
         {
@@ -51,7 +67,8 @@ namespace SistemaEstacionamento.Models
         public override string ToString()
         {
             return "Vaga: " + this.nome
-                + " | Placa: " + veiculo.GetPlaca();
+                + " | Placa: " + veiculo.GetPlaca()
+                + " | Entrada: " + this.momento;
                 
         }
     }

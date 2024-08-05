@@ -14,6 +14,9 @@ namespace SistemaEstacionamento.Models
         Vaga vaga = new Vaga();
         List<Vaga> listVagas = new List<Vaga>();
 
+        double precoInicial = 0.0;
+        double precoPorHora = 0.0;
+
         public void CadastrarVeiculo()
         {
             string placaVeiculo = null;
@@ -48,7 +51,8 @@ namespace SistemaEstacionamento.Models
                 // Se a placa informada for válida
                 if (isPlacaValida)
                 {
-                    
+                    // Consultar se o objeto 'placa' ja existe na lista de objetos 'listVeiculos'
+                    ConsultarVeiculo(placaVeiculo);
                 }
                 else
                 {
@@ -59,25 +63,6 @@ namespace SistemaEstacionamento.Models
 
             } while (!isPlacaValida);
 
-            // Instanciando atributos ao objeto 'veiculo'
-            veiculo = new Veiculo(placaVeiculo);
-
-            // Adicionando o objeto 'veiculo' á lista do tipo 'veiculo'
-            listaVeiculos.Add(veiculo);
-
-            foreach(Veiculo v in listaVeiculos)
-            {
-                Console.WriteLine($"    Placa: {v.GetPlaca()}");
-            }
-
-            // Selecionar a vaga
-            SelecionarVaga();
-
-            
-
-            //Console.WriteLine($"\n  --> O veículo '{veiculo.GetPlaca()}' foi cadastrado com sucesso.");
-
-            
             Console.WriteLine("\n  Pressione qualquer tecla para continuar...");
             Console.ReadLine();
 
@@ -86,49 +71,237 @@ namespace SistemaEstacionamento.Models
             Menu.ExibirMenu();
         }
 
+        public void RemoverVeiculo()
+        {
+            string placa = null;
+            string placaSemHifen = null;
+           
+            bool isPlacaValida = false;
+            bool isVagaOcupada = false;
 
-        public void SelecionarVaga()
+            Console.Clear();
+
+            Console.WriteLine("\n  ----------------------------------");
+            Console.WriteLine("    Menu > [Remover Veículo]");
+            Console.WriteLine("  ----------------------------------\n");
+
+            Console.Write("  Informe a placa do veículo: ");
+            placa = Console.ReadLine();
+
+            // Validar a placa recebida
+            isPlacaValida = veiculo.ValidarPlaca(placa);
+
+            if(isPlacaValida)
+            {
+                // Remover o hífen da placa recebida
+                if (placa.Contains('-'))
+                {
+                    int indiceHifen = placa.IndexOf("-");
+
+                    placaSemHifen = placa.Remove(indiceHifen, 1);
+                }
+                else
+                {
+                    placaSemHifen = placa;
+                }
+
+                placaSemHifen = placaSemHifen.ToUpper();
+
+
+                // Verifica se na lista vagas existe a vaga obtida no 'deletarVaga'
+                isVagaOcupada = listVagas.Any(x => x.GetNome() == vaga.GetNome());
+                
+                Console.WriteLine($"\n    isVagaOcupada: {isVagaOcupada}");
+                
+                if (isVagaOcupada)
+                {
+                    // Faz busca da placa informada na lista de veiculos
+                    veiculo = listaVeiculos.Find(x => x.GetPlaca() == placaSemHifen);
+
+                    // Faz a busca da vaga ocupada através da placa informada
+                    vaga = listVagas.Find(x => x.ToString().Contains(veiculo.GetPlaca()));
+
+                    Console.WriteLine($"\n  --> {veiculo}, {vaga}");
+
+
+                    Console.WriteLine($"\n --> Encontrado o veiculo '{veiculo.GetPlaca()}' na vaga '{vaga.GetNome()}'");
+                    
+                    // Removendo o objetos das listas
+                    listVagas.RemoveAll(x => x.GetNome() == vaga.GetNome());
+
+                    listaVeiculos.Remove(veiculo);
+                }
+                else
+                {
+                    Console.WriteLine($"\n   --> Não foi possível encontrar o veículo '{placaSemHifen}'.");
+                }
+
+            }
+            else
+            {
+                Console.WriteLine($"\n   --> A placa {placa} é invalida. Tente novamente.");
+            }
+
+            Console.WriteLine("\n Pressione qualquer tecla para retornar ao menu...");
+            Console.ReadLine();
+
+            Console.Clear();
+            Menu.ExibirMenu();
+
+        }
+
+        public void ExibirVagasEstacionamento()
+        {
+            Console.WriteLine("\n   --> Lista de vagas...\n");
+
+            foreach (var vaga in listVagas)
+            {
+                Console.WriteLine($"    {vaga}");
+            }
+
+            Console.WriteLine("\n Pressione qualquer tecla para retornar ao menu principal...");
+            Console.ReadLine();
+
+            Console.Clear();
+
+            Menu.ExibirMenu();
+        }
+
+        public void DefinirPrecos()
+        {
+            int opcao = 0;
+
+            do
+            {
+                Console.WriteLine("\n  ----------------------------------");
+                Console.WriteLine("    Menu > [Configurar Preços]");
+                Console.WriteLine("  ----------------------------------");
+
+                Console.WriteLine($"\n  [1] Preço inicial:  R${precoInicial.ToString("#.##")}");
+                Console.WriteLine($"\n  [2] Preço por Hora: R${precoPorHora.ToString("#.##")}");
+
+                Console.Write("\n  Informe uma opção para definir o preço: ");
+                opcao = Convert.ToInt32(Console.ReadLine());
+
+                if (opcao == 1)
+                {
+                    Console.Clear();
+                    Console.Write("\n Defina o valor do 'Preço Inicial': R$");
+                    precoInicial = Convert.ToDouble(Console.ReadLine());
+
+                    Console.WriteLine($"\n --> O 'Preço Inicial' teve o valor modificado para R${precoInicial}");
+
+                    Console.WriteLine("\n Pressione qualquer tecla para retornar ao menu principal...");
+                    Console.ReadLine();
+                    
+                    Console.Clear();
+                    Menu.ExibirMenu();
+                }
+                else if (opcao == 2)
+                {
+                    Console.Clear();
+                    Console.Write("\n Defina o valor do 'Preço por Hora': R$");
+                    precoPorHora = Convert.ToDouble(Console.ReadLine());
+
+                    Console.WriteLine($"\n --> O 'Preço por Hora' teve o valor modificado para R${precoPorHora}");
+
+                    Console.WriteLine("\n Pressione qualquer tecla para retornar ao menu principal...");
+                    Console.ReadLine();
+
+                    Console.Clear();
+                    Menu.ExibirMenu();
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine($"\n   --> A opção '{opcao}' é invalida. Tente novamente.");
+                }
+
+            } while(opcao <= 0 || opcao > 2);
+            
+
+        }
+
+        public double CalcularCustoEstacionamento()
+        {
+            return 0.0;
+        }
+
+        public bool ConsultarVeiculo(string placa)
+        {
+            bool isPlacaExists = false;
+            string placaSemHifen = null;
+
+            // Remover o hífen da placa recebida
+            if (placa.Contains('-'))
+            {
+                int indiceHifen = placa.IndexOf("-");
+
+                placaSemHifen = placa.Remove(indiceHifen, 1);
+            }
+            else
+            {
+                placaSemHifen = placa;
+            }
+
+            placaSemHifen = placaSemHifen.ToUpper();
+
+            //Console.WriteLine($"\n  Placa sem hífen: {placaSemHifen}");
+
+            // Realiza a consulta da placa na lista de veiculos
+            isPlacaExists = listaVeiculos.Any(x => x.GetPlaca() == placaSemHifen);
+
+            if(isPlacaExists)
+            {
+                Console.WriteLine($"\n    --> Não foi possível cadastrar o veiculo '{placaSemHifen}', pois o mesmo já está no estacionamento.");
+            }
+            else
+            {
+                Console.WriteLine($"\n    --> O veiculo '{placaSemHifen}' NÃO está no estacionamento.");
+
+                // Atribuir a nova placa á um objeto veiculo
+                veiculo = new Veiculo(placaSemHifen);
+
+                // Adicionar o objeto veiculo à lista de veiculos
+                listaVeiculos.Add(veiculo);
+
+                // Selecionar uma vaga disponível
+                SelecionarVaga(veiculo);
+            }
+
+
+            return true;
+        }
+
+
+        public void SelecionarVaga(Veiculo veiculo)
         {
             string vagaSelecionada = null;
             bool isVagaOcupada = false;
             
-            Console.Write("\nInforme a vaga à ser ocupada: ");
+            Console.Write("\n2) Informe a vaga à ser ocupada: ");
             vagaSelecionada = Console.ReadLine();
 
-            // Exibe a qtd de objetos 'vaga' na 'lista de vagas'
-            //Console.WriteLine($"\nListVaga.Count: {listVagas.Count}");
-
-            // Cria um novo objeto 'vaga', como referencia
-            vaga = new Vaga(vagaSelecionada);
-
             // Verifica a ja existencia do objeto 'vaga' na 'lista de vagas'
-            isVagaOcupada = listVagas.Any(x => x.GetNome() == vagaSelecionada);
+            isVagaOcupada = listVagas.Any(veiculo => veiculo.GetNome() == vagaSelecionada);
 
-            Console.WriteLine($"\nisVagaOcupada '{vagaSelecionada}': {isVagaOcupada}");
+            Console.WriteLine($"\n    --> isVagaOcupada '{vagaSelecionada}': {isVagaOcupada}");
 
-            if (isVagaOcupada)
+            if (!isVagaOcupada)
             {
-                Console.WriteLine($"--> A vaga '{vaga.GetNome()}' já está ocupada. Informe uma outra vaga disponível.");
+                // Instancia uma nova vaga, com um nome e um veiculo
+                vaga = new Vaga(vagaSelecionada, veiculo, DateTime.Now);
+
+                listVagas.Add(vaga);
+
+                Console.WriteLine($"\n    --> A vaga '{vagaSelecionada}' foi ocupada com o veiculo (placa): '{veiculo.GetPlaca()}'.");
             }
             else
             {
-                Console.WriteLine($"--> A vaga '{vaga.GetNome()}' está livre.");
-
-                // Adiciona o carro á vaga livre
-                vaga = new Vaga(vagaSelecionada, veiculo);
-
-                listVagas.Add(vaga);
-            }
-
-
-            Console.WriteLine("\n--> Lista de 'vagas'");
-            foreach (Vaga v in listVagas)
-            {
-                Console.WriteLine($"--> {v.ToString()}");
+                Console.WriteLine($"      --> A vaga '{vagaSelecionada}' já está ocupada. Informe uma outra vaga.");
             }
 
         }
-
         
     }
 }

@@ -26,7 +26,7 @@ namespace SistemaEstacionamento.Models
                 
                 Console.WriteLine("     [1] - Cadastrar Veículo...");
                 Console.WriteLine("     [2] - Remover Veículo...");
-                Console.WriteLine("     [3] - Listar Veículo...");
+                Console.WriteLine("     [3] - Listar Veículos...");
                 Console.WriteLine("     [4] - Configurar preços...");
                 Console.WriteLine("     [5] - Encerrar aplicativo...");
 
@@ -54,6 +54,21 @@ namespace SistemaEstacionamento.Models
                 case 1:
                     Console.Clear();
                     estacionamento.CadastrarVeiculo();
+                    break;
+
+                case 2:
+                    Console.Clear();
+                    estacionamento.RemoverVeiculo();
+                    break;
+
+                case 3:
+                    Console.Clear();
+                    estacionamento.ExibirVagasEstacionamento();
+                    break;
+
+                case 4:
+                    Console.Clear();
+                    estacionamento.DefinirPrecos();
                     break;
             }
 

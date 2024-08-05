@@ -39,8 +39,8 @@ namespace SistemaEstacionamento.Models
         {
             // O vetor de gabarito que verifica se a placa é valida ou nao.
             //
-            // Se a posição [x] == letra, entao é marcado com a letra 'O'
-            // Se a posição [x] == numero, entao é marcado com a letra 'X'
+            // Se a posição [x] == letra, entao é marcado com a letra 'L'
+            // Se a posição [x] == numero, entao é marcado com a letra 'n'
             //
             // Portanto, os 3 (três) primeiros caracteres devem ser 'letras' em sequência
             // - Formato correto: [L][L][l]
