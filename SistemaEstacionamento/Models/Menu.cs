@@ -70,6 +70,10 @@ namespace SistemaEstacionamento.Models
                     Console.Clear();
                     estacionamento.DefinirPrecos();
                     break;
+
+                case 5:
+                    System.Environment.Exit(0);
+                    break;
             }
 
         }

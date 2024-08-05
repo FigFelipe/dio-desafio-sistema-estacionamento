@@ -125,7 +125,10 @@ namespace SistemaEstacionamento.Models
 
 
                     Console.WriteLine($"\n --> Encontrado o veiculo '{veiculo.GetPlaca()}' na vaga '{vaga.GetNome()}'");
-                    
+
+                    // Faz o calculo do custo do estacionamento
+                    CalcularCustoEstacionamento(vaga.GetMomento());
+
                     // Removendo o objetos das listas
                     listVagas.RemoveAll(x => x.GetNome() == vaga.GetNome());
 
@@ -222,9 +225,25 @@ namespace SistemaEstacionamento.Models
 
         }
 
-        public double CalcularCustoEstacionamento()
+        public void CalcularCustoEstacionamento(DateTime entrada)
         {
-            return 0.0;
+            double precoTotal = 0.0;
+
+            DateTime saida = DateTime.Now;
+
+            TimeSpan diferencaHoras = saida - entrada;
+
+            int totalSegundos = Convert.ToInt32(diferencaHoras.TotalSeconds);
+
+            // Como é um ambiente de simulação,
+            // o calculo base será realizado por segundo
+            precoTotal = precoInicial + (precoPorHora *  totalSegundos);
+
+            Console.WriteLine("\n    Resumo do estacionamento");
+            Console.WriteLine($"    Tempo estacionado: {totalSegundos}s");
+            Console.WriteLine($"    Custo = {precoInicial} + ({precoPorHora} * {totalSegundos})");
+            Console.WriteLine($"\n   --> TOTAL: R${precoTotal}");
+
         }
 
         public bool ConsultarVeiculo(string placa)
